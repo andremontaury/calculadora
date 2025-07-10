@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculo Reembolso Estrangeiro</title>
+</head>
+<body>
+
+<script type='text/javascript'>
+//<![CDATA[
+function operacao(){
+		
+		//Recebe os valores dos campos e passa para a variável
+		var valor1 = document.ChronoContact_CalcDesEstMar.valor1.value;
+		var valor2 = document.ChronoContact_CalcDesEstMar.valor2.value;
+		var valor3 = document.ChronoContact_CalcDesEstMar.valor3.value;
+		var valor4 = document.ChronoContact_CalcDesEstMar.valor4.value;
+		var valor5 = document.ChronoContact_CalcDesEstMar.valor5.value;
+		
+		//Troca as vírgulas por pontos
+		valor1 = valor1.replace(',', '.');
+		valor2 = valor2.replace(',', '.');
+		valor3 = valor3.replace(',', '.');
+		valor4 = valor4.replace(',','.');
+		valor5 = valor5.replace(',','.');
+		
+		//Converte os valores de texto para número
+		valor1 = parseFloat(valor1);
+		valor2 = parseFloat(valor2);
+		valor3 = parseFloat(valor3);
+		valor4 = parseFloat(valor4);
+		valor5 = parseFloat(valor5);
+		
+		//Efetua os calculos
+		var varValReaisInvoice = valor1 * valor3;
+		var varValReaisDespCam = valor2 * valor4;
+		var varValRemessa = valor1 * valor3;
+		var varImpRemExt = (valor1 * valor3) * 0.2941;
+		var varDespCam = valor2 * valor4;
+		var varIOF = (valor1 * valor3) * 0.0038;
+
+		var varTotal = (varValRemessa + varImpRemExt + varDespCam + varIOF) / (1-0.1953) + valor5;
+		
+		//var varImpEmiNf = (varValRemessa + varImpRemExt + varDespCam + varIOF)*0.80;
+		//var varImpEmiNf = (varValRemessa + varImpRemExt + varDespCam + varIOF)/ 0.80 - (varValRemessa + varImpRemExt + varDespCam + varIOF);
+		//var varImpEmiNf = (varValRemessa) * 0.3141 + (varDespCam + varIOF) * 0.2427;
+		var varImpEmiNf = varTotal*0.1953 - valor5*0.1953;
+		
+		//Limita as casas decimais em 2
+		varValReaisInvoice = varValReaisInvoice.toFixed(2);
+		varValReaisDespCam = varValReaisDespCam.toFixed(2);
+		varValRemessa = varValRemessa.toFixed(2);
+		varImpRemExt = varImpRemExt.toFixed(2);
+		varDespCam = varDespCam.toFixed(2);
+		varIOF = varIOF.toFixed(2);
+		varImpEmiNf = varImpEmiNf.toFixed(2);
+		varTotal = varTotal.toFixed(2);
+		
+		//Converte numero em texto
+		varValReaisInvoice = varValReaisInvoice.toString();
+		varValReaisDespCam = varValReaisDespCam.toString();
+		varValRemessa = varValRemessa.toString();
+		varImpRemExt = varImpRemExt.toString();
+		varDespCam = varDespCam.toString();
+		varIOF = varIOF.toString();
+		varImpEmiNf = varImpEmiNf.toString();
+		varTotal = varTotal.toString();
+		
+		//Troca os pontos por virgulas
+		varValReaisInvoice = varValReaisInvoice.replace('.', ',');
+		varValReaisDespCam = varValReaisDespCam.replace('.', ',');
+		varValRemessa = varValRemessa.replace('.', ',');
+		varImpRemExt = varImpRemExt.replace('.', ',');
+		varDespCam = varDespCam.replace('.', ',');
+		varIOF = varIOF.replace('.', ',');
+		varImpEmiNf = varImpEmiNf.replace('.', ',');
+		varTotal = varTotal.replace('.', ',');
+		
+		//Passa os valores novamente para a tabela
+		document.getElementById("ValReaisInvoice").innerHTML = varValReaisInvoice;
+		document.getElementById("ValReaisDespCam").innerHTML = varValReaisDespCam;
+		document.getElementById("ValRemessa").innerHTML = varValRemessa;
+		document.getElementById("ImpRemExt").innerHTML = varImpRemExt;
+		document.getElementById("DespCam").innerHTML = varDespCam;
+		document.getElementById("IOF").innerHTML =  varIOF;
+		document.getElementById("Total").innerHTML =  varTotal;
+		document.getElementById("ImpEmiNf").innerHTML =  varImpEmiNf;
+		
+	}//]]>
+</script>
+		
+<form name="ChronoContact_CalcDesEstMar" id="ChronoContact_CalcDesEstMar" method="post" action="http://localhost/intranet/index.php?option=com_chronocontact&amp;task=send&amp;chronoformname=CalcDesEstMar&amp;Itemid=440" >
+
+		
+				<table width="413" border="1" cellspacing="0">
+  <tr>
+    <th width="150" align="center" bgcolor="#e7eee9">Conversão de Valores</th>
+    <th width="114" align="center" bgcolor="#e7eee9">Invoice</th>
+    <th width="127" align="center" bgcolor="#e7eee9">Despesas Cambiais</th>
+  </tr>
+  <tr>
+
+    <td>Valor Original</td>
+    <td>
+      <input name="valor1" type="text" id="valor1" tabindex="1" value="0" size="15" onkeyup="javascript:operacao()"/>
+	</td>
+    <td><input name="valor2" type="text" id="valor2" tabindex="2" value="0" size="15" onkeyup="javascript:operacao()"/></td>
+  </tr>
+  <tr>
+    <td>Câmbio</td>
+
+    <td><input name="valor3" type="text" id="valor3" tabindex="3" value="0" size="15" onkeyup="javascript:operacao()"/></td>
+    <td><input name="valor4" type="text" id="valor4" tabindex="4" value="0" size="15" onkeyup="javascript:operacao()"/></td>
+  </tr>
+  <tr>
+    <th bgcolor="#e7eee9">Valor em Reais</th>
+    <th bgcolor="#e7eee9"><div id="ValReaisInvoice">&nbsp;</div></th>
+    <th bgcolor="#e7eee9"><div id="ValReaisDespCam">&nbsp;</div></th>
+  </tr>
+
+</table>
+<br>
+<table width="413" border="1" cellspacing="0">
+  <tr>
+    <th colspan="2" bgcolor="#e7eee9">Cálculo Cobrança</th>
+    <th bgcolor="#e7eee9">Valor em Reais</th>
+  </tr>
+  <tr>
+    <td colspan="2">Valor da remessa</td>
+
+    <td><div id="ValRemessa">&nbsp;</div></td>
+  </tr>
+  <tr>
+    <td colspan="2">Impostos sobre a remessa ao Exterior</td>
+    <td><div id="ImpRemExt">&nbsp;</div></td>
+  </tr>
+  <tr>
+    <td colspan="2">Despesas cambiais</td>
+
+    <td><div id="DespCam">&nbsp;</div></td>
+  </tr>
+  <tr>
+    <td colspan="2">IOF</td>
+    <td><div id="IOF">&nbsp;</div></td>
+  </tr>
+  <tr>
+    <td colspan="2">Honorários</td>
+
+    <td><input name="valor5" type="text" id="valor5" tabindex="5" value="0" size="15" onkeyup="javascript:operacao()"/></td>
+  </tr>
+  <tr>
+    <td colspan="2">Impostos para emissão de NF</td>
+    <td><div id="ImpEmiNf">&nbsp;</div></td>
+  </tr>
+  <tr>
+    <th colspan="2" bgcolor="#e7eee9">Total da NF</td>
+
+    <th bgcolor="#e7eee9"><div id="Total">&nbsp;</div></td>
+  </tr>
+</table>		
+        </form>
+</body>
+</html>
